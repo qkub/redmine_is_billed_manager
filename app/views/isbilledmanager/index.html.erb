@@ -1,0 +1,62 @@
+<h2>Update is billed for project</h2>
+<div >
+  <div style="min-height: 80px;margin-top: 30px;">
+  <%unless @projectId.nil? %>
+    <table>
+      <tr><td align="right">Status projekta </td><td><b><%=@projectName %></b></td></tr>
+      <tr><td align="right"> v obdobju od </td><td><b><%=@date_from %></b> do <b><%=@date_to %></b></td></tr>
+      <tr>
+        <td align="right">znese skupaj</td> <td><b><%=@hours %> ur</b></td>
+
+      </tr>
+
+    </table>
+  <%end %>
+  </div>
+  <table style="margin-top: 10px;">
+    <tr>
+      <th>Projekt</th>
+      <th>Od</th>
+      <th>Do</th>
+      <th>Je placano</th>
+      <th></th>
+    </tr>
+    <tr>
+<%= form_for @newisbilledentry, url: {action: "execute"} do  |f| %>
+        <td><%= f.collection_select :project_id, @projects,:project_id,:project_name, { include_blank: true, :selected=> @projectId},{:onchange=>"update_date_for_project();" } %></td>
+        <td><%= f.date_field  :date_from , :value=>@date_from %></td>
+        <td><%= f.date_field :date_to , :value=>@date_to%></td>
+        <td><%= f.select :isbilled,options_for_select({ "No" => "0", "Yes" => "1" }, "1"), {prompt: true},{:align=>:center} %></td>
+
+        <td  valign="middle"><div style="margin-left: 15px;"><%= submit_tag "Execute" %></div></td>
+      <td></td>
+
+<% end %>
+    </tr>
+  </table>
+  <div style="margin-top: 15px;">
+
+  </div>
+</div>
+<div style="color: Gray;margin-top: 50px;">ZGODOVINA:</div>
+<div style="background: whitesmoke; border-radius: 5px;min-height: 300px; ">
+
+  <div>
+    <% @ttUpdates.each do |ttEntry| %>
+      <p>
+        <%= ttEntry[:id] %>
+        <%= ttEntry[:date_from] %>
+        <%= ttEntry[:date_to] %>
+      </p>
+    <% end %>
+  </div>
+</div>
+<script type=text/javascript>
+    $('#is_billed_mark_entry_project_id').change(function(e) {
+        var urlParam = $(this).val();
+        window.location = '/isbilledmanager/index/'+urlParam;
+    });
+  function update_date_for_project(s){
+
+  }
+</script>
